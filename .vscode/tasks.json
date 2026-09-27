@@ -1,0 +1,105 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Flutter: Compilar APK (Develop - Debug)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "apk",
+        "--debug",
+        "--flavor",
+        "dev",
+        "-t",
+        "lib/main_dev.dart"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$dart-flutter"
+      ],
+      "detail": "Genera el APK de desarrollo en modo debug para pruebas rápidas."
+    },
+    {
+      "label": "Flutter: Compilar APK (Develop - Release)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "apk",
+        "--release",
+        "--flavor",
+        "dev",
+        "-t",
+        "lib/main_dev.dart"
+      ],
+      "group": "build",
+      "problemMatcher": [
+        "$dart-flutter"
+      ],
+      "detail": "Genera el APK optimizado de desarrollo (staging)."
+    },
+    {
+      "label": "Flutter: Compilar APK (Producción - Release)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "apk",
+        "--release",
+        "--flavor",
+        "prod",
+        "-t",
+        "lib/main_prod.dart"
+      ],
+      "group": "build",
+      "problemMatcher": [
+        "$dart-flutter"
+      ],
+      "detail": "Genera el APK final de producción para distribución directa."
+    },
+    {
+      "label": "Flutter: Compilar App Bundle (Producción - AAB)",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "build",
+        "appbundle",
+        "--release",
+        "--flavor",
+        "prod",
+        "-t",
+        "lib/main_prod.dart"
+      ],
+      "group": "build",
+      "problemMatcher": [
+        "$dart-flutter"
+      ],
+      "detail": "Genera el paquete .aab de producción listo para Google Play Store."
+    },
+    {
+      "label": "Flutter: Clean",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "clean"
+      ],
+      "problemMatcher": [],
+      "detail": "Limpia la caché de compilación del proyecto."
+    },
+    {
+      "label": "Flutter: Pub Get",
+      "type": "shell",
+      "command": "flutter",
+      "args": [
+        "pub",
+        "get"
+      ],
+      "problemMatcher": [],
+      "detail": "Descarga las dependencias del proyecto."
+    }
+  ]
+}
