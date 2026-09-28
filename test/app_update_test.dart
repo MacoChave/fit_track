@@ -30,7 +30,7 @@ void main() {
   });
 
   group('VersionInfo Domain Entity', () {
-    test('isNewerThan returns true when buildNumber is higher and version is different', () {
+    test('isNewerThan returns true when version is semantically higher', () {
       const info = VersionInfo(
         version: '1.2.0',
         buildNumber: 5,
@@ -38,11 +38,11 @@ void main() {
         releaseNotes: ['Note 1'],
       );
 
-      expect(info.isNewerThan('1.1.0', 4), isTrue);
+      expect(info.isNewerThan('1.1.0', 50), isTrue);
       expect(info.isNewerThan('1.0.0', 1), isTrue);
     });
 
-    test('isNewerThan returns false when buildNumber is equal or lower', () {
+    test('isNewerThan returns true when version is same but buildNumber is higher', () {
       const info = VersionInfo(
         version: '1.2.0',
         buildNumber: 5,
@@ -50,11 +50,10 @@ void main() {
         releaseNotes: ['Note 1'],
       );
 
-      expect(info.isNewerThan('1.1.0', 5), isFalse);
-      expect(info.isNewerThan('1.1.0', 6), isFalse);
+      expect(info.isNewerThan('1.2.0', 4), isTrue);
     });
 
-    test('isNewerThan returns false when version is the same', () {
+    test('isNewerThan returns false when version is same and buildNumber is equal or lower', () {
       const info = VersionInfo(
         version: '1.2.0',
         buildNumber: 5,
@@ -62,51 +61,71 @@ void main() {
         releaseNotes: ['Note 1'],
       );
 
-      expect(info.isNewerThan('1.2.0', 4), isFalse);
+      expect(info.isNewerThan('1.2.0', 5), isFalse);
+      expect(info.isNewerThan('1.2.0', 6), isFalse);
+    });
+
+    test('isNewerThan handles prerelease tags like -dev gracefully', () {
+      const info = VersionInfo(
+        version: '1.0.0-dev',
+        buildNumber: 2,
+        url: 'https://example.com/app.apk',
+        releaseNotes: ['Note 1'],
+      );
+
+      expect(info.isNewerThan('1.0.0-dev', 1), isTrue);
+      expect(info.isNewerThan('1.0.0-dev', 2), isFalse);
+      expect(info.isNewerThan('1.0.0', 1), isTrue);
     });
   });
 
   group('VersionInfoModel Data Model', () {
     const validJson = '''
     {
-      "prod": {
-        "version": "1.2.0",
-        "buildNumber": 4,
-        "url": "https://example.com/prod.apk",
+      "dev": {
+        "version": "1.0.0-dev",
+        "buildNumber": 1,
+        "appName": "FitTrack Dev",
+        "url": "https://www.dropbox.com/scl/fi/jhx0z8bj8r5xglmcj2gub/app-dev-release.apk?rlkey=1lnentshainr65qh536510xyp&st=wdgwui3i&dl=0",
         "release_notes": [
-          "Estabilidad mejorada",
-          "Nuevos gráficos"
+          "Mejora en la vibracion",
+          "Reestructuracion del codigo y eliminacion de codigo no utilizado"
         ]
       },
-      "dev": {
-        "version": "1.3.0-dev",
-        "buildNumber": 6,
-        "url": "https://example.com/dev.apk",
+      "prod": {
+        "version": "1.0.0",
+        "buildNumber": 1,
+        "appName": "FitTrack",
+        "url": "https://www.dropbox.com/scl/fi/snw8f9ydo4bui9p0qcytw/app-prod-release.apk?rlkey=rw45fuxo5kseaubejuq1nsvgd&st=35an3jwe&dl=0",
         "release_notes": [
-          "Feature experimental"
+          "Actualización de entorno de desarrollo Flutter y Kotlin",
+          "Verificar actualizaciones disponibles"
         ]
       }
     }
     ''';
 
-    test('parses dev flavor correctly', () {
+    test('parses dev flavor with appName correctly', () {
       final model = VersionInfoModel.fromJson('dev', validJson);
-      expect(model.version, '1.3.0-dev');
-      expect(model.buildNumber, 6);
-      expect(model.url, 'https://example.com/dev.apk');
-      expect(model.releaseNotes, ['Feature experimental']);
+      expect(model.version, '1.0.0-dev');
+      expect(model.buildNumber, 1);
+      expect(model.appName, 'FitTrack Dev');
+      expect(model.url, contains('app-dev-release.apk'));
+      expect(model.releaseNotes.length, 2);
     });
 
     test('parses prod flavor correctly', () {
       final model = VersionInfoModel.fromJson('prod', validJson);
-      expect(model.version, '1.2.0');
-      expect(model.buildNumber, 4);
+      expect(model.version, '1.0.0');
+      expect(model.buildNumber, 1);
+      expect(model.appName, 'FitTrack');
       expect(model.releaseNotes.length, 2);
     });
 
     test('falls back to prod when requested flavor is not present', () {
       final model = VersionInfoModel.fromJson('staging', validJson);
-      expect(model.version, '1.2.0');
+      expect(model.version, '1.0.0');
+      expect(model.appName, 'FitTrack');
     });
 
     test('throws FormatException on invalid json structure', () {

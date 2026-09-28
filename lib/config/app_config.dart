@@ -24,7 +24,8 @@ class AppConfig {
         environment: EnvironmentType.dev,
         appTitle: 'FitTrack (Dev)',
         apiBaseUrl: 'https://dev-api.fittrack.local',
-        updateUrl: 'https://raw.githubusercontent.com/fittrack/releases/dev/version.json',
+        updateUrl:
+            'https://www.dropbox.com/scl/fi/uethct3ngdeuguvefvimg/version.json?rlkey=5budh6zohptmaj5wqfhrh4jrs&st=ajoizpqr&dl=0',
         showDebugBanner: true,
       );
 

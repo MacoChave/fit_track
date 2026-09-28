@@ -8,6 +8,7 @@ class VersionInfoModel extends VersionInfo {
     required super.buildNumber,
     required super.url,
     required super.releaseNotes,
+    super.appName,
   });
 
   factory VersionInfoModel.fromJson(String flavorString, String jsonString) {
@@ -27,6 +28,7 @@ class VersionInfoModel extends VersionInfo {
       buildNumber: flavorData['buildNumber'] is int
           ? flavorData['buildNumber'] as int
           : int.tryParse(flavorData['buildNumber']?.toString() ?? '0') ?? 0,
+      appName: flavorData['appName']?.toString(),
       url: flavorData['url']?.toString() ?? '',
       releaseNotes: (flavorData['release_notes'] as List<dynamic>?)
               ?.map((e) => e.toString())
@@ -39,6 +41,7 @@ class VersionInfoModel extends VersionInfo {
     return {
       'version': version,
       'buildNumber': buildNumber,
+      'appName': appName,
       'url': url,
       'release_notes': releaseNotes,
     };
