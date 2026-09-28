@@ -7,6 +7,7 @@ void main() {
       environment: EnvironmentType.dev,
       appTitle: 'FitTrack (Dev)',
       apiBaseUrl: 'https://dev-api.fittrack.local',
+      updateUrl: 'https://raw.githubusercontent.com/fittrack/releases/dev/version.json',
       showDebugBanner: true,
     ),
   );

@@ -13,6 +13,8 @@ import '../widgets/flat_button.dart';
 import '../widgets/flat_card.dart';
 import '../widgets/segmented_selector.dart';
 import '../widgets/stepper_control.dart';
+import '../features/app_update/data/services/update_service.dart';
+import '../features/app_update/presentation/widgets/update_dialog.dart';
 import 'api_key_config_screen.dart';
 import 'calendar_nutrition_screen.dart';
 
@@ -34,6 +36,7 @@ class _BiometricsEquipmentScreenState extends State<BiometricsEquipmentScreen> {
   String _saveButtonText = 'Guardar Perfil y Actualizar Plan IA';
   IconData _saveButtonIcon = Icons.save;
   int _currentNavIndex = 2; // Ajustes
+  bool _isCheckingUpdate = false;
 
   @override
   void initState() {
@@ -1589,6 +1592,17 @@ class _BiometricsEquipmentScreenState extends State<BiometricsEquipmentScreen> {
           ],
         ),
         const SizedBox(height: AppSpacing.spaceSm),
+        FlatButton(
+          label: _isCheckingUpdate
+              ? 'BUSCANDO ACTUALIZACIONES...'
+              : 'BUSCAR ACTUALIZACIONES',
+          icon: Icons.system_update_alt,
+          variant: FlatButtonVariant.outline,
+          height: 48,
+          isLoading: _isCheckingUpdate,
+          onPressed: _isCheckingUpdate ? null : _handleManualUpdateCheck,
+        ),
+        const SizedBox(height: AppSpacing.spaceSm),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -1608,6 +1622,44 @@ class _BiometricsEquipmentScreenState extends State<BiometricsEquipmentScreen> {
         ),
       ],
     );
+  }
+
+  Future<void> _handleManualUpdateCheck() async {
+    setState(() => _isCheckingUpdate = true);
+    final info = await UpdateService.checkForUpdates();
+    if (!mounted) return;
+    setState(() => _isCheckingUpdate = false);
+
+    if (info != null) {
+      UpdateDialog.show(context, info);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: AppColors.surfaceElevated,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: AppSpacing.roundedMd,
+            side: const BorderSide(color: AppColors.borderSubtle),
+          ),
+          content: const Row(
+            children: [
+              Icon(
+                Icons.check_circle_outline,
+                color: AppColors.accentEnergy,
+                size: 20,
+              ),
+              SizedBox(width: AppSpacing.spaceSm),
+              Expanded(
+                child: Text(
+                  'Ya cuentas con la versión más reciente.',
+                  style: TextStyle(color: AppColors.textPrimary),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   String _formatNumber(int number) {

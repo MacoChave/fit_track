@@ -5,12 +5,14 @@ class AppConfig {
   final EnvironmentType environment;
   final String appTitle;
   final String apiBaseUrl;
+  final String updateUrl;
   final bool showDebugBanner;
 
   const AppConfig({
     required this.environment,
     required this.appTitle,
     required this.apiBaseUrl,
+    this.updateUrl = '',
     this.showDebugBanner = false,
   });
 
@@ -22,6 +24,7 @@ class AppConfig {
         environment: EnvironmentType.dev,
         appTitle: 'FitTrack (Dev)',
         apiBaseUrl: 'https://dev-api.fittrack.local',
+        updateUrl: 'https://raw.githubusercontent.com/fittrack/releases/dev/version.json',
         showDebugBanner: true,
       );
 

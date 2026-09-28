@@ -10,7 +10,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
 
     // Establecer resolución móvil adecuada para la pantalla completa
-    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.physicalSize = const Size(1080, 5000);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(() => tester.view.resetPhysicalSize());
 

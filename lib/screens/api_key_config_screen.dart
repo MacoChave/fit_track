@@ -979,7 +979,7 @@ class _ApiKeyConfigScreenState extends State<ApiKeyConfigScreen> {
               Expanded(
                 child: RichText(
                   text: TextSpan(
-                    text: 'Almacenado de forma no volátil en Android Keystore / iOS Secure Enclave. FitTrack opera en arquitectura Zero-Server.',
+                    text: 'RN-03: Almacenado de forma no volátil en Android Keystore / iOS Secure Enclave. FitTrack opera en arquitectura Zero-Server.',
                     style: AppTypography.bodySm.copyWith(
                       color: AppColors.textSecondary,
                       fontSize: 11,
@@ -1143,6 +1143,22 @@ class _ApiKeyConfigScreenState extends State<ApiKeyConfigScreen> {
                   ),
                 ],
               ),
+              if (isSuccess && result.testCode.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.accentEnergy.withValues(alpha: 0.15),
+                    borderRadius: AppSpacing.roundedSm,
+                  ),
+                  child: Text(
+                    '${result.testCode} PASSED',
+                    style: AppTypography.labelMonoSm.copyWith(
+                      color: AppColors.accentEnergy,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
             ],
           ),
           const SizedBox(height: AppSpacing.spaceMd),
@@ -1411,7 +1427,7 @@ class _ApiKeyConfigScreenState extends State<ApiKeyConfigScreen> {
                   ),
                   const SizedBox(width: 6),
                   Text(
-                    'OPTIMIZAR DURACIÓN DE SESIÓN',
+                    'OPTIMIZAR DURACIÓN DE SESIÓN (RN-05)',
                     style: AppTypography.labelMonoSm.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w700,

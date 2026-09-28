@@ -7,6 +7,7 @@ void main() {
       environment: EnvironmentType.prod,
       appTitle: 'FitTrack AI',
       apiBaseUrl: 'https://api.fittrack.com',
+      updateUrl: 'https://raw.githubusercontent.com/fittrack/releases/main/version.json',
       showDebugBanner: false,
     ),
   );

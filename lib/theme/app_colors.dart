@@ -6,11 +6,19 @@ class AppColors {
   const AppColors._();
 
   // Primary & Kinetic Accents
-  static const Color primary = Color(0xFF75FF9E);
+  static const Color primary = Color(
+    0xFF75FF9E,
+  ); // Kinetic Mint Green - HEX #75FF9E
   static const Color accentEnergy = Color(0xFF00E676); // Kinetic Electric Lime
-  static const Color primaryContainer = Color(0xFF00E676);
-  static const Color onPrimary = Color(0xFF003918);
-  static const Color onPrimaryContainer = Color(0xFF00612E);
+  static const Color primaryContainer = Color(
+    0xFF00E676,
+  ); // Kinetic Electric Lime - HEX #00E676
+  static const Color onPrimary = Color(
+    0xFF003918,
+  ); // Kinetic Very Dark Green - HEX #003918
+  static const Color onPrimaryContainer = Color(
+    0xFF00612E,
+  ); // Kinetic Dark Green - HEX #00612E
 
   // Secondary Accents (Progression / Success)
   static const Color secondary = Color(0xFF4AE176);

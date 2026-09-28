@@ -10,6 +10,8 @@ import '../theme/app_typography.dart';
 import '../widgets/main_layout.dart';
 import '../widgets/flat_button.dart';
 import '../widgets/flat_card.dart';
+import '../features/app_update/data/services/update_service.dart';
+import '../features/app_update/presentation/widgets/update_dialog.dart';
 import '../services/manual_routine_importer.dart';
 import 'biometrics_equipment_screen.dart';
 import 'macronutrients_food_log_screen.dart';
@@ -53,6 +55,18 @@ class _CalendarNutritionScreenState extends State<CalendarNutritionScreen> {
     } else {
       _loadRoutineFromSqlite();
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAutoUpdate();
+    });
+  }
+
+  Future<void> _checkAutoUpdate() async {
+    try {
+      final info = await UpdateService.checkForUpdates();
+      if (info != null && mounted) {
+        UpdateDialog.show(context, info);
+      }
+    } catch (_) {}
   }
 
   Future<void> _loadRoutineFromSqlite() async {
